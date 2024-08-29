@@ -1,42 +1,37 @@
 import React, { useState } from "react";
 
 interface TodoFormProps {
-  addTodo: (text: string) => void;
+  onSubmit:(tittle:string)=>void
 }
 
-const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
-  const [todo, setTodo] = useState<string>("");
+const TodoForm: React.FC<TodoFormProps> = ({onSubmit}) => {
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTodo(e.target.value);
-  };
+  const[input,setInput]=useState("")
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const  handleSubmit=(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
-    if (todo.trim()) {
-      addTodo(todo);
-      setTodo(""); // Clear the input after submission
-    }
-  };
 
+    if (!input.trim()) return;
+
+    onSubmit(input);
+    setInput("");
+  }
+  
   return (
-    <div className="flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        <input
-          type="text"
-          value={todo}
-          onChange={handleChange}
-          placeholder="Enter your task"
-          className="p-2 border border-gray-300 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Add
-        </button>
-      </form>
-    </div>
+    <form className="flex" onSubmit={handleSubmit}>
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="What needs to be done?"
+        className="rounded-s-md grow border border-gray-400 p-2"
+      />
+      <button
+        type="submit"
+        className="w-16 rounded-e-md bg-slate-900 text-white hover:bg-slate-800"
+      >
+        Add
+      </button>
+    </form>
   );
 };
 
